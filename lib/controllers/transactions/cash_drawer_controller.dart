@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:get/get.dart';
@@ -11,6 +12,7 @@ import 'package:lakasir/utils/utils.dart';
 import 'package:lakasir/widgets/dialog.dart';
 import 'package:lakasir/widgets/filled_button.dart';
 import 'package:lakasir/widgets/text_field.dart';
+import 'package:sunmi_printer_plus/sunmi_printer_plus.dart';
 
 class CashDrawerController extends GetxController {
   final _cashDrawerService = CashDrawerService();
@@ -113,6 +115,8 @@ class CashDrawerController extends GetxController {
                     margin: const EdgeInsets.only(top: 10),
                     child: MyFilledButton(
                       onPressed: () {
+                        // Trigger opening the Sunmi cash drawer
+                        openSunmiCashDrawer(); // Add this method call
                         storeCashDrawer(cashDrawerController.numberValue);
                         Get.back();
                         Get.rawSnackbar(
@@ -125,7 +129,7 @@ class CashDrawerController extends GetxController {
                       },
                       child: const Icon(
                         Icons.save,
-                        color: Colors.white,
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -136,6 +140,16 @@ class CashDrawerController extends GetxController {
         ),
       ),
     );
+  }
+
+  void openSunmiCashDrawer() async {
+    try {
+      await SunmiPrinter.bindingPrinter();
+      await SunmiPrinter.openDrawer();
+      print('Sunmi cash drawer opened successfully');
+    } catch (e) {
+      print('Error opening Sunmi cash drawer: $e');
+    }
   }
 
   @override
