@@ -45,52 +45,37 @@ class _MyBottomBarState extends State<MyBottomBar> {
     return Stack(
       children: [
         if (!widget.hideBlockButton)
-          Positioned(
-            bottom: 0,
-            left: 0,
-            child: SizedBox(
-              height: 50,
-              width: MediaQuery.of(context).size.width * 8 / 100,
-              child: MyFilledButton(
-                onPressed: () {},
-                child: const Icon(
-                  Icons.block_rounded,
-                  color: Colors.white,
-                ),
+          if (!widget.hideBlockButton)
+            Positioned(
+              bottom: 0,
+              right: MediaQuery.of(context).size.width * 8 / 100,
+              child: SizedBox(
+                height: 50,
+                width: widget.actions != null || widget.singleAction!
+                    ? MediaQuery.of(context).size.width * 73 / 100
+                    : MediaQuery.of(context).size.width * 92 / 100,
+                child: widget.label != null
+                    ? Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              blurRadius: 1,
+                              spreadRadius: -5,
+                              offset: const Offset(-3, 7),
+                              blurStyle: BlurStyle.normal,
+                            ),
+                          ],
+                        ),
+                        child: MyFilledButton(
+                          onPressed: widget.onPressed!,
+                          child: widget.label ?? Container(),
+                        ),
+                      )
+                    : null,
               ),
             ),
-          ),
-        if (!widget.hideBlockButton)
-          Positioned(
-            bottom: 0,
-            right: MediaQuery.of(context).size.width * 8 / 100,
-            child: SizedBox(
-              height: 50,
-              width: widget.actions != null || widget.singleAction!
-                  ? MediaQuery.of(context).size.width * 73 / 100
-                  : MediaQuery.of(context).size.width * 92 / 100,
-              child: widget.label != null
-                  ? Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            blurRadius: 1,
-                            spreadRadius: -5,
-                            offset: const Offset(-3, 7),
-                            blurStyle: BlurStyle.normal,
-                          ),
-                        ],
-                      ),
-                      child: MyFilledButton(
-                        onPressed: widget.onPressed!,
-                        child: widget.label ?? Container(),
-                      ),
-                    )
-                  : null,
-            ),
-          ),
         if (widget.actions != null || widget.singleAction!)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
